@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interview</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="card">
+    <h2>Skill Assessment</h2>
+    <div class="subtitle">Answer carefully to evaluate your role</div>
+
+    <div id="questionBox"></div>
+</div>
+
+<script>
+let index = 0;
+
+function loadQuestion() {
+    fetch(`http://127.0.0.1:5000/get-question/${index}`)
+        .then(res => res.json())
+        .then(data => {
+
+            if (data.done) {
+                window.location.href = "dashboard.html";
+                return;
+            }
+
+            let html = `
+                <div class="question-tile">
+                    <div class="question">${data.q}</div>
+            `;
+
+            // ONE WORD ANSWER
+            if (data.type === "one") {
+                html += `
+                    <input type="text" id="answer" placeholder="Type your answer">
+                `;
+            } 
+            // MCQ
+            else {
+                html += `<div class="options">`;
+
+                data.options.forEach((opt, i) => {
+                    html += `
+                        <label>
+                            <input type="radio" name="answer" value="${opt}">
+                            <span class="opt-${i}"></span>
+                        </label>
+                    `;
+                });
+
+                html += `</div>`;
+            }
+
+            html += `
+                    <button onclick="submitAnswer()">Submit Answer</button>
+                </div>
+            `;
+
+            document.getElementById("questionBox").innerHTML = html;
+
+            // 🔥 IMPORTANT FIX: render HTML tags as TEXT
+            if (data.type === "mcq") {
+                data.options.forEach((opt, i) => {
+                    document.querySelector(`.opt-${i}`).textContent = opt;
+                });
+            }
+        });
+}
+
+function submitAnswer() {
+    let answer = "";
+
+    let text = document.getElementById("answer");
+    if (text) answer = text.value.trim();
+
+    let radio = document.querySelector("input[name='answer']:checked");
+    if (radio) answer = radio.value;
+
+    fetch(`http://127.0.0.1:5000/evaluate/${index}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ answer: answer })
+    })
+    .then(() => {
+        index++;
+        loadQuestion();
+    });
+}
+
+loadQuestion();
+</script>
+
+</body>
+</html>

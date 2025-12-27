@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Result</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="card">
+    <h2 id="name"></h2>
+    <div class="score"></div>
+    <div class="role"></div>
+    <div class="advice"></div>
+</div>
+
+<script>
+fetch("http://127.0.0.1:5000/final-result")
+.then(res => res.json())
+.then(data => {
+    document.getElementById("name").innerText = "Welcome, " + data.name;
+    document.querySelector(".score").innerText = "Score: " + data.score + "%";
+    document.querySelector(".role").innerText = "Suggested Role: " + data.role;
+    document.querySelector(".advice").innerText = data.advice;
+});
+</script>
+
+</body>
+</html>
