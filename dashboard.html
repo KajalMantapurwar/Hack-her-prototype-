@@ -14,7 +14,7 @@
 </div>
 
 <script>
-fetch("http://127.0.0.1:5000/final-result")
+fetch("https://hack-her-backend-1.onrender.com/final-result")
 .then(res => res.json())
 .then(data => {
     document.getElementById("name").innerText = "Welcome, " + data.name;

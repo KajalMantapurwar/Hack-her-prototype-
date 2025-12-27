@@ -17,7 +17,7 @@
 let index = 0;
 
 function loadQuestion() {
-    fetch(`http://127.0.0.1:5000/get-question/${index}`)
+    fetch(`https://hack-her-backend-1.onrender.com/get-question/${index}`)
         .then(res => res.json())
         .then(data => {
 
@@ -78,7 +78,7 @@ function submitAnswer() {
     let radio = document.querySelector("input[name='answer']:checked");
     if (radio) answer = radio.value;
 
-    fetch(`http://127.0.0.1:5000/evaluate/${index}`, {
+    fetch(`https://hack-her-backend-1.onrender.com/evaluate/${index}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ answer: answer })

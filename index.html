@@ -48,7 +48,7 @@ function start() {
     document.querySelectorAll('.skills input:checked')
         .forEach(cb => skills.push(cb.value));
 
-    fetch("http://127.0.0.1:5000/select-skills", {
+    fetch("https://hack-her-backend-1.onrender.com/select-skills", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({
