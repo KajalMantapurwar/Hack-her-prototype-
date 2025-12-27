@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Interview System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="card">
+    <h2>AI Skill Interview</h2>
+    <div class="subtitle">High-end skill assessment & role prediction</div>
+
+    <input type="text" id="name" placeholder="Enter your name">
+
+    <div class="skills">
+        <label class="skill-row">
+            <input type="checkbox" value="ML">
+            <span class="skill-name">Machine Learning</span>
+        </label>
+
+        <label class="skill-row">
+            <input type="checkbox" value="DL">
+            <span class="skill-name">Deep Learning</span>
+        </label>
+
+        <label class="skill-row">
+            <input type="checkbox" value="Data Analytics">
+            <span class="skill-name">Data Analytics</span>
+        </label>
+
+        <label class="skill-row">
+            <input type="checkbox" value="Python">
+            <span class="skill-name">Python</span>
+        </label>
+
+        <label class="skill-row">
+            <input type="checkbox" value="HTML">
+            <span class="skill-name">HTML</span>
+        </label>
+    </div>
+
+    <button onclick="start()">Start Interview</button>
+</div>
+
+<script>
+function start() {
+    let skills = [];
+    document.querySelectorAll('.skills input:checked')
+        .forEach(cb => skills.push(cb.value));
+
+    fetch("http://127.0.0.1:5000/select-skills", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            name: document.getElementById("name").value,
+            skills: skills
+        })
+    }).then(() => window.location.href = "interview.html");
+}
+</script>
+
+</body>
+</html>
